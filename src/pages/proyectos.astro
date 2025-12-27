@@ -1,0 +1,491 @@
+---
+import Footer from '../components/footer.astro';
+---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Proyectos 🎨</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <style>
+    :root {
+      --primary-blue: #2563eb;
+      --light-blue: #3b82f6;
+      --dark-blue: #1d4ed8;
+      --primary-green: #22c55e;
+      --light-green: #4ade80;
+      --dark-green: #16a34a;
+      --accent-yellow: #eab308;
+      --light-yellow: #e7e7e2;
+      --light-gray: #f8fafc;
+      --medium-gray: #e5e7eb;
+      --dark-gray: #64748b;
+      --white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f0f9ff 0%, #f0fdf4 100%);
+      color: #1e293b;
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    /* HEADER */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: linear-gradient(to right, var(--primary-blue), var(--dark-blue));
+      color: white;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      background: var(--accent-yellow);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: var(--dark-blue);
+    }
+
+    header h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    nav a:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--accent-yellow);
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    nav a:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    nav a:hover:after {
+      width: 80%;
+    }
+
+    /* HERO SECTION */
+    .hero {
+      text-align: center;
+      padding: 50px 20px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color: var(--dark-blue);
+      font-size: 2.8rem;
+      margin-bottom: 15px;
+      position: relative;
+      display: inline-block;
+    }
+
+    h1:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 4px;
+      background: var(--primary-green);
+      border-radius: 2px;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      color: var(--dark-gray);
+      max-width: 700px;
+      margin: 25px auto 30px;
+      line-height: 1.6;
+    }
+
+    /* GRID DE PROYECTOS */
+    .projects-grid {
+      max-width: 1200px;
+      margin: 0 auto 60px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 30px;
+    }
+
+    .project-card {
+      background: var(--white);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      border-top: 4px solid var(--primary-blue);
+    }
+
+    .project-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .project-card:nth-child(2) {
+      border-top-color: var(--primary-green);
+    }
+
+    .project-card:nth-child(3) {
+      border-top-color: var(--accent-yellow);
+    }
+
+    .project-card:nth-child(4) {
+      border-top-color: var(--light-blue);
+    }
+
+    .project-image {
+      height: 200px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .project-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .project-card:hover .project-image img {
+      transform: scale(1.05);
+    }
+
+    .project-content {
+      padding: 25px;
+    }
+
+    .project-title {
+      font-size: 1.5rem;
+      color: var(--dark-blue);
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .project-description {
+      color: var(--dark-gray);
+      line-height: 1.6;
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+    }
+
+
+    .project-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 25px;
+    }
+
+    .tech-tag {
+      background: var(--light-gray);
+      color: var(--dark-blue);
+      padding: 5px 12px;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+
+    .btn-view {
+      flex: 1;
+      text-align: center;
+      padding: 10px 20px;
+      background: linear-gradient(to right, var(--primary-green), var(--light-green));
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(34, 197, 94, 0.2);
+    }
+
+    .btn-view:hover {
+      background: linear-gradient(to right, var(--dark-green), var(--primary-green));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(34, 197, 94, 0.3);
+    }
+
+    .btn-demo {
+      flex: 1;
+      text-align: center;
+      padding: 10px 20px;
+      background: linear-gradient(to right, var(--primary-blue), var(--light-blue));
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(37, 99, 235, 0.2);
+    }
+
+    .btn-demo:hover {
+      background: linear-gradient(to right, var(--dark-blue), var(--primary-blue));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
+    }
+
+    /* STATS */
+    .stats-projects {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 40px auto 50px;
+      flex-wrap: wrap;
+      max-width: 1200px;
+      padding: 0 20px;
+    }
+
+    .stat-card {
+      background: var(--white);
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      min-width: 180px;
+      text-align: center;
+      border-top: 4px solid var(--primary-blue);
+      transition: transform 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .stat-card:nth-child(2) {
+      border-top-color: var(--primary-green);
+    }
+
+    .stat-card:nth-child(3) {
+      border-top-color: var(--accent-yellow);
+    }
+
+    .stat-card:nth-child(4) {
+      border-top-color: var(--light-blue);
+    }
+
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--dark-blue);
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      color: var(--dark-gray);
+      font-size: 1rem;
+      margin-top: 5px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        padding: 20px;
+        gap: 15px;
+      }
+      
+      nav {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      
+      nav a {
+        margin: 0;
+      }
+      
+      h1 {
+        font-size: 2.2rem;
+      }
+      
+      .projects-grid {
+        grid-template-columns: 1fr;
+        padding: 0 15px;
+      }
+
+      .stats-projects {
+        gap: 20px;
+      }
+      
+      .stat-card {
+        min-width: 140px;
+        padding: 20px 15px;
+      }    
+    }
+
+    /* ANIMACIONES */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero, .projects-grid, .stats-projects {
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .project-card {
+      animation: fadeIn 0.5s ease-out;
+      animation-fill-mode: both;
+    }
+
+    .project-card:nth-child(1) { animation-delay: 0.1s; }
+    .project-card:nth-child(2) { animation-delay: 0.2s; }
+    .project-card:nth-child(3) { animation-delay: 0.3s; }
+    .project-card:nth-child(4) { animation-delay: 0.4s; }
+    .project-card:nth-child(5) { animation-delay: 0.5s; }
+    .project-card:nth-child(6) { animation-delay: 0.6s; }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo-container">
+      <div class="logo">🚀</div>
+      <h2>Proyectos</h2>
+    </div>
+    <nav>
+      <a href="/">Volver</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <h1>Proyectos del Curso</h1>
+    <p class="subtitle">Adéntrate en la contemplación de las admirables obras concebidas por nuestros estudiantes, pues cada una de ellas es testimonio de largas horas de esmero, del ingenio creador y del armonioso esfuerzo colectivo que ennoblece el trabajo en común.</p>
+    
+    <div class="stats-projects">
+      <div class="stat-card">
+        <div class="stat-value">4</div>
+        <div class="stat-label">Proyectos Totales</div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="projects-grid">
+    <!-- Proyecto 1 -->
+    <div class="project-card">
+      <div class="project-image">
+        <img src="/public/img/portafolio.png" alt="EcoTrack App">
+      </div>
+      <div class="project-content">
+        <h3 class="project-title">Portafolios Personales</h3>
+        <p class="project-description">Portafolios de los estudiantes del curso 2do A 'INF' con sus respectivas habilidades y información.</p>
+        
+        
+        <div class="project-tech">
+          <span class="tech-tag">Astro</span>
+          <span class="tech-tag">Vercel</span>
+          <span class="tech-tag">GitHub</span>
+          <span class="tech-tag">VS Code</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Proyecto 2 -->
+    <div class="project-card">
+      <div class="project-image">
+        <img src="/public/img/registro.jpg" alt="LearnLingua App">
+      </div>
+      <div class="project-content">
+        <h3 class="project-title">Registro de Personas</h3>
+        <p class="project-description">Aplicación CRUD para registrar personas y sus datos en una base de datos SQLite.</p>
+        <div class="project-tech">
+          <span class="tech-tag">Python</span>
+          <span class="tech-tag">Flet</span>
+          <span class="tech-tag">Powershell</span>
+          <span class="tech-tag">VS Code</span>
+          <span class="tech-tag">SQLite</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Proyecto 3 -->
+    <div class="project-card" >
+      <div class="project-image">
+        <img src="/public/img/gestor.jpg" alt="MedAI Assistant">
+      </div>
+      <div class="project-content">
+        <h3 class="project-title">Gestor de Tareas</h3>
+        <p class="project-description">Es un API Rest con una interfaz web para gestionar tareas desde una pagina web.</p>
+
+        <div class="project-tech">
+          <span class="tech-tag">Django</span>
+          <span class="tech-tag">JavaScript</span>
+          <span class="tech-tag">Postman</span>
+          <span class="tech-tag">HTML</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Proyecto 4 -->
+    <div class="project-card">
+      <div class="project-image">
+        <img src="/public/img/calculadora.png" alt="MarketPredict">
+      </div>
+      <div class="project-content">
+        <h3 class="project-title">Calculadora Web</h3>
+        <p class="project-description">Herramienta de análisis predictivo de mercados financieros usando machine learning y datos en tiempo real.</p>
+
+        <div class="project-tech">
+          <span class="tech-tag">Python</span>
+          <span class="tech-tag">Tkinter</span>
+          <span class="tech-tag">VS Code</span>
+          <span class="tech-tag">Powershell</span>
+          <span class="tech-tag">Pillow</span>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+    <Footer />
+</body>
+</html>

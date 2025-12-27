@@ -1,0 +1,467 @@
+---
+import Footer from '../components/footer.astro';
+import { estudiantes } from '../data/estudiantes.js';
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Segundo Informática 💻</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root {
+      --primary-blue: #2563eb;
+      --light-blue: #3b82f6;
+      --dark-blue: #1d4ed8;
+      --primary-green: #22c55e;
+      --light-green: #4ade80;
+      --dark-green: #16a34a;
+      --accent-yellow: #eab308;
+      --light-yellow: #e7e7e2;
+      --light-gray: #f8fafc;
+      --medium-gray: #e5e7eb;
+      --dark-gray: #64748b;
+      --white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f0f9ff 0%, #f0fdf4 100%);
+      color: #1e293b;
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    /* HEADER */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: linear-gradient(to right, var(--primary-blue), var(--dark-blue));
+      color: white;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      background: var(--accent-yellow);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: var(--dark-blue);
+    }
+
+    header h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    nav a:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--accent-yellow);
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    nav a:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    nav a:hover:after {
+      width: 80%;
+    }
+
+    /* HERO SECTION */
+    .hero {
+      text-align: center;
+      padding: 40px 20px 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color: var(--dark-blue);
+      font-size: 2.8rem;
+      margin-bottom: 10px;
+      position: relative;
+      display: inline-block;
+    }
+
+    h1:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 4px;
+      background: var(--primary-green);
+      border-radius: 2px;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      color: var(--dark-gray);
+      max-width: 600px;
+      margin: 20px auto 30px;
+      line-height: 1.6;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .stat-card {
+      background: var(--white);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      min-width: 150px;
+      border-top: 4px solid var(--primary-blue);
+    }
+
+    .stat-card:nth-child(2) {
+      border-top-color: var(--primary-green);
+    }
+
+    .stat-card:nth-child(3) {
+      border-top-color: var(--accent-yellow);
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--dark-blue);
+    }
+
+    .stat-label {
+      color: var(--dark-gray);
+      font-size: 0.9rem;
+      margin-top: 5px;
+    }
+
+    /* TABLA */
+    .table-container {
+      max-width: 1200px;
+      margin: 30px auto 60px;
+      padding: 0 20px;
+      overflow: hidden;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(37, 99, 235, 0.1);
+      background: var(--white);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0;
+    }
+
+    thead {
+      background: linear-gradient(to right, var(--primary-blue), var(--light-blue));
+    }
+
+    th {
+      color: white;
+      padding: 18px 15px;
+      text-align: left;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+    }
+
+    th:first-child {
+      border-radius: 16px 0 0 0;
+      padding-left: 25px;
+    }
+
+    th:last-child {
+      border-radius: 0 16px 0 0;
+      padding-right: 25px;
+    }
+
+    td {
+      padding: 18px 15px;
+      border-bottom: 1px solid var(--medium-gray);
+      text-align: left;
+    }
+
+    td:first-child {
+      padding-left: 25px;
+      font-weight: 600;
+      color: var(--dark-blue);
+    }
+
+    td:last-child {
+      padding-right: 25px;
+    }
+
+    tr {
+      transition: all 0.3s ease;
+    }
+
+    tr:not(:first-child):hover {
+      background: var(--light-yellow);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(234, 179, 8, 0.15);
+    }
+
+    .student-name {
+      font-weight: 600;
+      color: var(--dark-blue);
+    }
+
+    .curso-badge {
+      display: inline-block;
+      background: var(--light-green);
+      color: var(--dark-green);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    a.ver {
+      color: white;
+      background: linear-gradient(to right, var(--primary-green), var(--light-green));
+      padding: 8px 18px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-block;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(34, 197, 94, 0.2);
+    }
+
+    a.ver:hover {
+      background: linear-gradient(to right, var(--dark-green), var(--primary-green));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(34, 197, 94, 0.3);
+    }
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        padding: 20px;
+        gap: 15px;
+      }
+      
+      nav {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      
+      nav a {
+        margin: 0;
+      }
+      
+      h1 {
+        font-size: 2.2rem;
+      }
+      
+      .table-container {
+        overflow-x: auto;
+      }
+      
+      table {
+        min-width: 600px;
+      }
+      
+      .stats {
+        gap: 15px;
+      }
+      
+      .stat-card {
+        min-width: 120px;
+        padding: 15px;
+      }
+    }
+
+    /* ANIMACIONES */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero, .table-container {
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    tr {
+      animation: fadeIn 0.5s ease-out;
+      animation-fill-mode: both;
+    }
+
+    tr:nth-child(1) { animation-delay: 0.1s; }
+    tr:nth-child(2) { animation-delay: 0.2s; }
+    tr:nth-child(3) { animation-delay: 0.3s; }
+    tr:nth-child(4) { animation-delay: 0.4s; }
+    tr:nth-child(5) { animation-delay: 0.5s; }
+    tr:nth-child(6) { animation-delay: 0.6s; }
+    tr:nth-child(7) { animation-delay: 0.7s; }
+    tr:nth-child(8) { animation-delay: 0.8s; }
+
+	.btn-ver {
+  display: inline-block;
+  padding: 6px 14px;
+  background: #4765ee;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo-container">
+      <div class="logo">🦆</div>
+      <h2>Portafolio de 2ndo INF "A"</h2>
+    </div>
+    <nav>
+      <a href="/beasties">Beasties</a>
+      <a href="/categorias">Categorías</a>
+      <a href="/estudiantes">Estudiantes</a>
+      <a href="/proyectos">Proyectos</a>
+	  <a href="/momentos">Momentos</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Portafolios del Curso</h1>
+    <p class="subtitle">Adéntrate en el compendio de obras y empeños forjados por los discípulos del segundo año de Informática a lo largo del curso lectivo, donde el ingenio juvenil y el estudio perseverante dieron forma a proyectos y momentos dignos de memoria y consideración.</p>
+    
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-value" id="total-students">32</div>
+        <div class="stat-label">Estudiantes</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="total-projects">+2</div>
+        <div class="stat-label">Proyectos</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">82%</div>
+        <div class="stat-label">Efectividad</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Nombre</th>
+        <th>Curso</th>
+        <th>Portafolio</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {estudiantes.map(e => (
+        <tr>
+          <td>{e.numero}</td>
+          <td>{e.nombre}</td>
+          <td>{e.curso}</td>
+          <td>
+            <a class="btn-ver" href={e.url}>Ver</a>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+
+
+  <Footer />
+
+  <script>
+    // Simulación de datos dinámicos
+    document.addEventListener('DOMContentLoaded', function() {
+      // Contador animado para el total de estudiantes
+      const totalStudentsElement = document.getElementById('total-students');
+      let studentsCount = 0;
+      const targetStudents = 32;
+      const studentsInterval = setInterval(() => {
+        studentsCount++;
+        totalStudentsElement.textContent = studentsCount;
+        if (studentsCount >= targetStudents) {
+          clearInterval(studentsInterval);
+        }
+      }, 50);
+      
+      // Añadir efecto de clic a los botones "Ver Portafolio"
+      const verButtons = document.querySelectorAll('a.ver');
+      verButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+          // En un entorno real, aquí se manejaría la navegación
+          console.log('Navegando al portafolio del estudiante');
+        });
+      });
+      
+      // Resaltar fila al pasar el mouse
+      const tableRows = document.querySelectorAll('tbody tr');
+      tableRows.forEach(row => {
+        row.addEventListener('mouseenter', function() {
+          this.style.transform = 'translateY(-4px)';
+        });
+        
+        row.addEventListener('mouseleave', function() {
+          this.style.transform = 'translateY(0)';
+        });
+      });
+    });
+  </script>
+</body>
+</html>

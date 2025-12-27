@@ -1,0 +1,587 @@
+---
+import Footer from '../../components/Footer.astro';
+import { estudiantes } from '../../data/estudiantes.js';
+
+export function getStaticPaths() {
+  return estudiantes.map(est => ({
+    params: { slug: est.slug }
+  }));
+}
+
+const { slug } = Astro.params;
+const estudiante = estudiantes.find(e => e.slug === slug);
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{estudiante.nombre} - Perfil</title>
+  <style>
+    :root {
+      --primary-blue: #2563eb;
+      --light-blue: #3b82f6;
+      --dark-blue: #1d4ed8;
+      --primary-green: #22c55e;
+      --light-green: #4ade80;
+      --dark-green: #16a34a;
+      --accent-yellow: #eab308;
+      --light-yellow: #e7e7e2;
+      --light-gray: #f8fafc;
+      --medium-gray: #e5e7eb;
+      --dark-gray: #64748b;
+      --white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f0f9ff 0%, #f0fdf4 100%);
+      color: #1e293b;
+      min-height: 100vh;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    /* HEADER */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: linear-gradient(to right, var(--primary-blue), var(--dark-blue));
+      color: white;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      background: var(--accent-yellow);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: var(--dark-blue);
+    }
+
+    header h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    nav a:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--accent-yellow);
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    nav a:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    nav a:hover:after {
+      width: 80%;
+    }
+
+    /* CONTENIDO PRINCIPAL */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* TARJETA DE PERFIL */
+    .profile-card {
+      background: var(--white);
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(37, 99, 235, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      max-width: 1000px;
+      margin: 0 auto;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .profile-header {
+      background: linear-gradient(to right, var(--primary-blue), var(--light-blue));
+      padding: 30px;
+      color: white;
+      text-align: center;
+      position: relative;
+    }
+
+    .profile-header h1 {
+      color: white;
+      font-size: 2.5rem;
+      margin-bottom: 5px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .profile-header h1:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background: var(--accent-yellow);
+      border-radius: 2px;
+    }
+
+    .curso-badge {
+      display: inline-block;
+      background: var(--accent-yellow);
+      color: var(--dark-blue);
+      padding: 8px 20px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-top: 15px;
+      box-shadow: 0 4px 10px rgba(234, 179, 8, 0.3);
+    }
+
+    /* CONTENIDO DEL PERFIL */
+    .profile-content {
+      display: flex;
+      flex-direction: row;
+      padding: 40px;
+      gap: 40px;
+    }
+
+    @media (max-width: 900px) {
+      .profile-content {
+        flex-direction: column;
+      }
+    }
+
+    /* FOTO DEL ESTUDIANTE */
+    .profile-photo-container {
+      flex: 0 0 300px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .profile-photo {
+      width: 100%;
+      max-width: 300px;
+      height: 300px;
+      border-radius: 20px;
+      object-fit: cover;
+      border: 8px solid var(--white);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s ease;
+    }
+
+    .profile-photo:hover {
+      transform: scale(1.03);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .photo-placeholder {
+      width: 100%;
+      height: 300px;
+      background: linear-gradient(135deg, var(--light-blue), var(--primary-green));
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 4rem;
+      font-weight: 700;
+      border: 8px solid var(--white);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    /* INFORMACIÓN DEL PERFIL */
+    .profile-info {
+      flex: 1;
+    }
+
+    .info-section {
+      margin-bottom: 30px;
+    }
+
+    .info-section h2 {
+      color: var(--dark-blue);
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--medium-gray);
+      position: relative;
+    }
+
+    .info-section h2:after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 80px;
+      height: 2px;
+      background: var(--primary-green);
+    }
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .info-label {
+      font-weight: 600;
+      color: var(--dark-gray);
+      min-width: 120px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-value {
+      color: #1e293b;
+      font-size: 1.1rem;
+    }
+
+    .age-value {
+      display: inline-block;
+      background: var(--light-blue);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    /* DESCRIPCIÓN */
+    .description {
+      background: var(--light-gray);
+      padding: 20px;
+      border-radius: 12px;
+      border-left: 4px solid var(--primary-blue);
+      margin-top: 10px;
+      line-height: 1.8;
+    }
+
+    /* GUSTOS */
+    .gustos-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .gusto-badge {
+      display: inline-block;
+      background: var(--light-green);
+      color: var(--dark-green);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .gusto-badge:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(34, 197, 94, 0.2);
+    }
+
+    .social-minimal {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.social-minimal-link {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+}
+
+.social-minimal-link svg {
+  width: 22px;
+  height: 22px;
+  fill: #1e293b;
+}
+
+/* Hover colores reales */
+.social-minimal-link.instagram:hover {
+  background: #e1306c;
+}
+.social-minimal-link.whatsapp:hover {
+  background: #25d366;
+}
+.social-minimal-link.email:hover {
+  background: #2563eb;
+}
+
+.social-minimal-link:hover svg {
+  fill: white;
+  transform: scale(1.1);
+}
+
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        padding: 20px;
+        gap: 15px;
+      }
+      
+      nav {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      
+      nav a {
+        margin: 0;
+      }
+      
+      .profile-content {
+        padding: 25px;
+        gap: 30px;
+      }
+      
+      .profile-photo-container {
+        flex: 0 0 auto;
+      }
+      
+      .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+      }
+      
+      .info-label {
+        min-width: auto;
+      }
+      
+      .social-minimal {
+        justify-content: center;
+      }
+    }
+
+    /* ANIMACIONES */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .profile-card {
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .info-item {
+      animation: fadeIn 0.5s ease-out;
+      animation-fill-mode: both;
+    }
+
+    .info-item:nth-child(1) { animation-delay: 0.1s; }
+    .info-item:nth-child(2) { animation-delay: 0.2s; }
+    .info-item:nth-child(3) { animation-delay: 0.3s; }
+    .info-item:nth-child(4) { animation-delay: 0.4s; }
+    .info-item:nth-child(5) { animation-delay: 0.5s; }
+    .info-item:nth-child(6) { animation-delay: 0.6s; }
+  </style>
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="logo-container">
+      <div class="logo">🎓</div>
+      <h2>Portafolio Personal</h2>
+    </div>
+    <nav>
+      <a href="/">Volver</a>
+    </nav>
+  </header>
+
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <div class="container">
+    <div class="profile-card">
+      <!-- ENCABEZADO DEL PERFIL -->
+      <div class="profile-header">
+        <h1>{estudiante.nombre}</h1>
+      </div>
+      
+      <!-- CONTENIDO DEL PERFIL -->
+      <div class="profile-content">
+        <!-- FOTO DEL ESTUDIANTE -->
+<div class="profile-photo-container">
+  {estudiante.foto ? (
+    <img
+      src={estudiante.foto}
+      alt={estudiante.nombre}
+      class="profile-photo"
+    />
+  ) : (
+    <div class="photo-placeholder">
+      {estudiante.nombre
+        .split(" ")
+        .map(n => n[0])
+        .join("")}
+    </div>
+  )}
+</div>
+
+        
+        <!-- INFORMACIÓN DEL ESTUDIANTE -->
+        <div class="profile-info">
+          <!-- INFORMACIÓN PERSONAL -->
+          <div class="info-section">
+            <h2>Información Personal</h2>
+            <div class="info-item">
+              <div class="info-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                Nombre completo:
+              </div>
+              <div class="info-value"> {estudiante.nombre}</div>
+            </div>
+            
+            <div class="info-item">
+              <div class="info-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                Edad:
+              </div>
+              <div class="info-value">
+                <span class="age-value">{estudiante.edad || 'No especificada'} años</span>
+              </div>
+            </div>
+            
+            <div class="info-item">
+              <div class="info-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
+                </svg>
+                Curso:
+              </div>
+              <div class="info-value">{estudiante.curso}</div>
+            </div>
+          </div>
+          
+          <!-- GUSTOS -->
+          <div class="info-section">
+            <h2>Gustos e Intereses</h2>
+            <div class="gustos-container">
+              {estudiante.gustos && estudiante.gustos.length > 0 ? (
+                estudiante.gustos.map(gusto => (
+                  <span class="gusto-badge">{gusto}</span>
+                ))
+              ) : (
+                <>
+                </>
+              )}
+            </div>
+          </div>
+          
+          <!-- DESCRIPCIÓN -->
+<div class="info-section">
+  <h2>Descripción</h2>
+  <div class="description">
+    {estudiante.description}
+  </div>
+</div>
+
+        <div class="social-minimal">
+  <!-- Instagram -->
+  <a
+    href={estudiante.instagram || "https://instagram.com"}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="social-minimal-link instagram"
+    title="Instagram"
+  >
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm10 2a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h10zm-5 3a5 5 0 1 0 0 10a5 5 0 0 0 0-10zm0 2a3 3 0 1 1 0 6a3 3 0 0 1 0-6zm4.5-.9a1.1 1.1 0 1 0 0 2.2a1.1 1.1 0 0 0 0-2.2z"/>
+    </svg>
+  </a>
+
+  <!-- WhatsApp -->
+  <a
+    href={`https://wa.me/${estudiante.whatsapp || "1234567890"}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="social-minimal-link whatsapp"
+    title="WhatsApp"
+  >
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 2a10 10 0 0 0-8.9 14.6L2 22l5.6-1.5A10 10 0 1 0 12 2zm0 2a8 8 0 0 1 6.9 12.1l-.3.5.8 3-3.1-.8-.5.3A8 8 0 1 1 12 4zm4.4 9.5c-.2-.1-1.2-.6-1.4-.7-.2-.1-.4-.1-.6.1-.2.2-.7.7-.9.9-.2.2-.3.2-.6.1a6.5 6.5 0 0 1-3.1-2.7c-.2-.3 0-.4.1-.6l.4-.5c.1-.2.1-.3 0-.5-.1-.2-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.1 3c.1.2 2 3 4.9 4.2.7.3 1.3.5 1.8.6.7.2 1.3.2 1.8.1.6-.1 1.2-.5 1.4-1 .2-.5.2-.9.1-1 0-.1-.2-.2-.4-.3z"/>
+    </svg>
+  </a>
+
+  <!-- Email -->
+  <a
+    href={`mailto:${estudiante.email || "ejemplo@email.com"}`}
+    class="social-minimal-link email"
+    title="Correo"
+  >
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 4l8 5l8-5V6l-8 5L4 6v2z"/>
+    </svg>
+  </a>
+</div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <Footer />
+</body>
+</html>

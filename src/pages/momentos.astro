@@ -1,0 +1,423 @@
+---
+import Footer from '../components/footer.astro';
+---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Momentos 👻</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <style>
+    :root {
+      --primary-blue: #2563eb;
+      --light-blue: #3b82f6;
+      --dark-blue: #1d4ed8;
+      --primary-green: #22c55e;
+      --light-green: #4ade80;
+      --dark-green: #16a34a;
+      --accent-yellow: #eab308;
+      --light-yellow: #e7e7e2;
+      --light-gray: #f8fafc;
+      --medium-gray: #e5e7eb;
+      --dark-gray: #64748b;
+      --white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f0f9ff 0%, #f0fdf4 100%);
+      color: #1e293b;
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    /* HEADER */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: linear-gradient(to right, var(--primary-blue), var(--dark-blue));
+      color: white;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      background: var(--accent-yellow);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: var(--dark-blue);
+    }
+
+    header h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    nav a:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--accent-yellow);
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    nav a:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    nav a:hover:after {
+      width: 80%;
+    }
+
+    /* HERO SECTION */
+    .hero {
+      text-align: center;
+      padding: 40px 20px 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color: var(--dark-blue);
+      font-size: 2.8rem;
+      margin-bottom: 10px;
+      position: relative;
+      display: inline-block;
+    }
+
+    h1:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 4px;
+      background: var(--primary-green);
+      border-radius: 2px;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      color: var(--dark-gray);
+      max-width: 700px;
+      margin: 20px auto 40px;
+      line-height: 1.6;
+    }
+
+    /* CONTENEDOR DE MOMENTOS */
+    .moments-container {
+      max-width: 1100px;
+      margin: 0 auto 60px;
+      padding: 0 20px;
+    }
+
+    /* MOMENTO INDIVIDUAL */
+    .moment {
+      background: var(--white);
+      border-radius: 16px;
+      margin-bottom: 40px;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .moment-header {
+      padding: 25px 30px;
+      border-bottom: 2px solid var(--medium-gray);
+      background: var(--light-gray);
+    }
+
+    .moment-title {
+      color: var(--dark-blue);
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .moment-content {
+      display: flex;
+      min-height: 280px;
+    }
+
+    /* CONTENIDO DE FOTO Y DESCRIPCIÓN */
+    .moment-photo {
+      flex: 1;
+      min-width: 300px;
+      overflow: hidden;
+    }
+
+    .moment-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .moment-description {
+      flex: 1;
+      padding: 30px;
+      display: flex;
+      align-items: center;
+    }
+
+    .description-text {
+      font-size: 1.1rem;
+      color: var(--dark-gray);
+      line-height: 1.7;
+    }
+
+    /* ALTERNAR LADO DE LA FOTO */
+    .moment:nth-child(odd) .moment-content {
+      flex-direction: row;
+    }
+
+    .moment:nth-child(even) .moment-content {
+      flex-direction: row-reverse;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 25px;
+      background: var(--primary-blue);
+      color: white;
+      margin-top: 40px;
+    }
+
+    footer p {
+      margin: 0;
+      font-size: 0.95rem;
+    }
+
+    .footer-links {
+      margin-top: 15px;
+    }
+
+    .footer-links a {
+      color: var(--light-yellow);
+      text-decoration: none;
+      margin: 0 10px;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: white;
+      text-decoration: underline;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        padding: 20px;
+        gap: 15px;
+      }
+      
+      nav {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      
+      nav a {
+        margin: 0;
+      }
+      
+      h1 {
+        font-size: 2.2rem;
+      }
+      
+      .moment-content {
+        flex-direction: column !important;
+        min-height: auto;
+      }
+      
+      .moment-photo {
+        min-width: 100%;
+        height: 250px;
+      }
+      
+      .moment-description {
+        padding: 25px;
+      }
+      
+      .moment-title {
+        font-size: 1.5rem;
+      }
+      
+      .description-text {
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .moment-header {
+        padding: 20px;
+      }
+      
+      .moment-description {
+        padding: 20px;
+      }
+      
+      .description-text {
+        font-size: 0.95rem;
+      }
+    }
+
+    /* ANIMACIONES */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero, .moments-container {
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .moment {
+      animation: fadeIn 0.5s ease-out;
+      animation-fill-mode: both;
+    }
+
+    .moment:nth-child(1) { animation-delay: 0.1s; }
+    .moment:nth-child(2) { animation-delay: 0.2s; }
+    .moment:nth-child(3) { animation-delay: 0.3s; }
+    .moment:nth-child(4) { animation-delay: 0.4s; }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo-container">
+      <div class="logo">📸</div>
+      <h2>Momentos </h2>
+    </div>
+    <nav>
+      <a href="/">Volver</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <h1>Momentos del Curso</h1>
+    <p class="subtitle">Memorias singulares que, entre risas y vivencias compartidas, hemos forjado juntos como curso, y que perduran como grato testimonio de nuestra común travesía.</p>
+  </div>
+
+  <div class="moments-container">
+    <!-- MOMENTO 1: CAMPEONATO DE FÚTBOL -->
+    <div class="moment">
+      <div class="moment-header">
+        <h2 class="moment-title">Campeonato de Fútbol "Celtic FC"</h2>
+      </div>
+      <div class="moment-content">
+        <div class="moment-photo">
+          <img src="/img/celticfc.jpeg" alt="Campeonato de Fútbol">
+        </div>
+        <div class="moment-description">
+          <p class="description-text">En el mes de septiembre tuvieron lugar los campeonatos internos de fútbol del colegio, ocasión en la cual nos fue asignado el ilustre nombre de Celtic FC, evocando a la antigua escuadra de tierras escocesas. A decir verdad, ninguna gloria anticipábamos, y la profecía acabó por cumplirse. Logramos un empate en el primer encuentro y, en los restantes, fuimos vencidos por amplias goleadas. Mas, a fin de cuentas, lo verdaderamente digno de aprecio no fue el resultado, sino el noble ejercicio del cuerpo y el espíritu que el deporte nos concedió.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOMENTO 2: DANZAS TRADICIONALES -->
+    <div class="moment">
+      <div class="moment-header">
+        <h2 class="moment-title">Danzas Tradicionales "Guayaquil"</h2>
+      </div>
+      <div class="moment-content">
+        <div class="moment-photo">
+          <img src="/img/danzas.jpg" alt="Danzas Tradicionales">
+        </div>
+        <div class="moment-description">
+          <p class="description-text">Singular y digna de mención fue la danza que nos fue encomendada representar. Encarnamos a la ciudad de Guayaquil, y se esperaba de nosotros una muestra de gracia, elegancia y esplendor. No obstante, lo único verdaderamente vistoso fue el yerro de Puenayán, error que, como eco inevitable, arrastró consigo al resto del grupo. Desde aquel instante, la ejecución se tornó desganada y carente de fervor, quedando todo ello relegado al ámbito del simple recuerdo.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOMENTO 3: CUMPLEAÑOS DE LA PRESIDENTA -->
+    <div class="moment">
+      <div class="moment-header">
+        <h2 class="moment-title">Cumpleaños de la Presidenta</h2>
+      </div>
+      <div class="moment-content">
+        <div class="moment-photo">
+          <img src="/img/cumple.jpg" alt="Cumpleaños de la Presidenta">
+        </div>
+        <div class="moment-description">
+          <p class="description-text">A cinco días del mes de diciembre del año 2025, transcurrió una jornada que bien pudiera haber sido una más, de no ser porque en tal fecha nuestra estimada presidenta celebraba un año más de vida (17 contaba ya la criatura). Gracias al esmero de Mejía, en calidad de organizador, fue posible llevar a cabo una modesta aunque sincera celebración, colmada del afecto y la camaradería que todos profesamos hacia la presi.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOMENTO 4: CASA ABIERTA -->
+    <div class="moment">
+      <div class="moment-header">
+        <h2 class="moment-title">Casa Abierta</h2>
+      </div>
+      <div class="moment-content">
+        <div class="moment-photo">
+          <img src="/img/torneo.png" alt="Casa Abierta">
+        </div>
+        <div class="moment-description">
+          <p class="description-text">Poco queda por añadir acerca de este suceso, salvo que resultó ciertamente emocionante, pues tuvo lugar un torneo de Haxball cuya sola presencia avivó los ánimos. Fue motivo de asombro comprobar que, contra todo pronóstico, acudiera más de una docena de almas dispuestas a contribuir con su moneda para pelear el campeonato(siendo entendido, por supuesto, que el vencedor habría de alzarse con lo recaudado). Entretanto, compañeros como Patiño, Gómez y Cadmen aguardaban la ocasión de exhibir sus destrezas en Django, Astro y Flet; mas tales nobles empeños quedaron inevitablemente eclipsados por la pasión desatada en torno al torneo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <Footer />
+  <script>
+    // Efecto hover simple para los momentos
+    document.querySelectorAll('.moment').forEach(moment => {
+      moment.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-5px)';
+        this.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.12)';
+      });
+      
+      moment.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0)';
+        this.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.08)';
+      });
+    });
+  </script>
+</body>
+</html>

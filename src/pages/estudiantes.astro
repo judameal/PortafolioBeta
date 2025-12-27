@@ -1,0 +1,737 @@
+---
+import Footer from '../components/footer.astro';
+---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Estudiantes 🤩</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <style>
+    :root {
+      --primary-blue: #2563eb;
+      --light-blue: #3b82f6;
+      --dark-blue: #1d4ed8;
+      --primary-green: #22c55e;
+      --light-green: #4ade80;
+      --dark-green: #16a34a;
+      --accent-yellow: #eab308;
+      --light-yellow: #e7e7e2;
+      --light-gray: #f8fafc;
+      --medium-gray: #e5e7eb;
+      --dark-gray: #64748b;
+      --white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f0f9ff 0%, #f0fdf4 100%);
+      color: #1e293b;
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    /* HEADER */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: linear-gradient(to right, var(--primary-blue), var(--dark-blue));
+      color: white;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      background: var(--accent-yellow);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: var(--dark-blue);
+    }
+
+    header h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    nav a:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--accent-yellow);
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    nav a:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    nav a:hover:after {
+      width: 80%;
+    }
+
+    /* HERO SECTION */
+    .hero {
+      text-align: center;
+      padding: 40px 20px 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color: var(--dark-blue);
+      font-size: 2.8rem;
+      margin-bottom: 10px;
+      position: relative;
+      display: inline-block;
+    }
+
+    h1:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 4px;
+      background: var(--primary-green);
+      border-radius: 2px;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      color: var(--dark-gray);
+      max-width: 700px;
+      margin: 20px auto 40px;
+      line-height: 1.6;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .stat-card {
+      background: var(--white);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      min-width: 150px;
+      border-top: 4px solid var(--primary-blue);
+    }
+
+    .stat-card:nth-child(2) {
+      border-top-color: var(--primary-green);
+    }
+
+    .stat-card:nth-child(3) {
+      border-top-color: var(--accent-yellow);
+    }
+
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--dark-blue);
+    }
+
+    .stat-label {
+      color: var(--dark-gray);
+      font-size: 1rem;
+      margin-top: 5px;
+    }
+
+    /* GRID DE ESTUDIANTES */
+    .students-grid {
+      max-width: 1400px;
+      margin: 0 auto 60px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 25px;
+    }
+
+    /* CARTA DE ESTUDIANTE */
+    .student-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .student-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    /* FOTO REDONDA */
+    .student-photo {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 5px solid var(--white);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      margin: 0 auto 25px;
+      background: var(--light-gray);
+      position: relative;
+    }
+
+    .student-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* NÚMERO PEQUEÑO */
+    .student-number {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: var(--primary-blue);
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.9rem;
+      box-shadow: 0 4px 8px rgba(37, 99, 235, 0.2);
+    }
+
+    /* NOMBRE */
+    .student-name-card {
+      font-size: 1.5rem;
+      color: var(--dark-blue);
+      margin-bottom: 20px;
+      font-weight: 700;
+      line-height: 1.3;
+      text-align: center;
+      width: 100%;
+    }
+
+    /* DESCRIPCIÓN */
+    .student-description {
+      color: var(--dark-gray);
+      line-height: 1.6;
+      font-size: 1rem;
+      text-align: center;
+      width: 100%;
+      flex-grow: 1;
+    }
+
+    /* COLORES ALTERNATIVOS PARA LAS TARJETAS */
+    .student-card:nth-child(8n+1) { border-top: 5px solid var(--primary-blue); }
+    .student-card:nth-child(8n+2) { border-top: 5px solid var(--primary-green); }
+    .student-card:nth-child(8n+3) { border-top: 5px solid var(--accent-yellow); }
+    .student-card:nth-child(8n+4) { border-top: 5px solid #8b5cf6; }
+    .student-card:nth-child(8n+5) { border-top: 5px solid #ec4899; }
+    .student-card:nth-child(8n+6) { border-top: 5px solid #14b8a6; }
+    .student-card:nth-child(8n+7) { border-top: 5px solid #f97316; }
+    .student-card:nth-child(8n+8) { border-top: 5px solid #6366f1; }
+
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        padding: 20px;
+        gap: 15px;
+      }
+      
+      nav {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      
+      nav a {
+        margin: 0;
+      }
+      
+      h1 {
+        font-size: 2.2rem;
+      }
+      
+      .students-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+      }
+      
+      .student-photo {
+        width: 120px;
+        height: 120px;
+      }
+      
+      .student-name-card {
+        font-size: 1.3rem;
+      }
+      
+      .stats {
+        gap: 15px;
+      }
+      
+      .stat-card {
+        min-width: 120px;
+        padding: 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .students-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .student-photo {
+        width: 110px;
+        height: 110px;
+      }
+      
+      .student-name-card {
+        font-size: 1.2rem;
+      }
+      
+      .student-description {
+        font-size: 0.95rem;
+      }
+    }
+
+    /* ANIMACIONES */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero, .students-grid {
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .student-card {
+      animation: fadeIn 0.5s ease-out;
+      animation-fill-mode: both;
+    }
+
+    /* Animación escalonada para las cartas */
+    .student-card:nth-child(1) { animation-delay: 0.05s; }
+    .student-card:nth-child(2) { animation-delay: 0.1s; }
+    .student-card:nth-child(3) { animation-delay: 0.15s; }
+    .student-card:nth-child(4) { animation-delay: 0.2s; }
+    .student-card:nth-child(5) { animation-delay: 0.25s; }
+    .student-card:nth-child(6) { animation-delay: 0.3s; }
+    .student-card:nth-child(7) { animation-delay: 0.35s; }
+    .student-card:nth-child(8) { animation-delay: 0.4s; }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo-container">
+      <div class="logo">👨‍🎓</div>
+      <h2>Estudiantes</h2>
+    </div>
+    <nav>
+      <a href="/">Volver</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <h1>Los Estudiantes</h1>
+    <p class="subtitle">Treinta y dos talentos singulares que, con su ingenio y virtud, convierten al curso en una vivencia verdaderamente extraordinaria y digna de admiración.</p>
+    
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-value">32</div>
+        <div class="stat-label">Estudiantes</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="students-grid">
+    <!-- ESTUDIANTE 1 -->
+    <div class="student-card">
+      <div class="student-number">1</div>
+      <div class="student-photo">
+        <img src="/img/placeholder.jpg" alt="Balcázar Christofer">
+      </div>
+      <h3 class="student-name-card">Balcázar Christofer</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 2 -->
+    <div class="student-card">
+      <div class="student-number">2</div>
+      <div class="student-photo">
+        <img src="/img/barre.png" alt="Barre Kimberly">
+      </div>
+      <h3 class="student-name-card">Barre Kimberly</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 3 -->
+    <div class="student-card">
+      <div class="student-number">3</div>
+      <div class="student-photo">
+        <img src="/img/cadmen.jpg" alt="Cadmen Ángel">
+      </div>
+      <h3 class="student-name-card">Cadmen Ángel</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 4 -->
+    <div class="student-card">
+      <div class="student-number">4</div>
+      <div class="student-photo">
+        <img src="/img/placeholder.jpg" alt="Camalle Gisselle">
+      </div>
+      <h3 class="student-name-card">Camalle Gisselle</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 5 -->
+    <div class="student-card">
+      <div class="student-number">5</div>
+      <div class="student-photo">
+        <img src="/img/cevallos.png" alt="Cevallos Ammy">
+      </div>
+      <h3 class="student-name-card">Cevallos Ammy</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 6 -->
+    <div class="student-card">
+      <div class="student-number">6</div>
+      <div class="student-photo">
+        <img src="/img/cedeño.png" alt="Cedeño Mishel">
+      </div>
+      <h3 class="student-name-card">Cedeño Mishel</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 7 -->
+    <div class="student-card">
+      <div class="student-number">7</div>
+      <div class="student-photo">
+        <img src="/img/placeholder.jpg" alt="Chalá Jesús">
+      </div>
+      <h3 class="student-name-card">Chalá Jesús</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 8 -->
+    <div class="student-card">
+      <div class="student-number">8</div>
+      <div class="student-photo">
+        <img src="/img/correa.png" alt="Correa Lesly">
+      </div>
+      <h3 class="student-name-card">Correa Lesly</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 9 -->
+    <div class="student-card">
+      <div class="student-number">9</div>
+      <div class="student-photo">
+        <img src="/img/espinoza.jpg" alt="Espinoza Ana">
+      </div>
+      <h3 class="student-name-card">Espinoza Ana</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 10 -->
+    <div class="student-card">
+      <div class="student-number">10</div>
+      <div class="student-photo">
+        <img src="/img/placeholder.jpg" alt="Gómez Karla">
+      </div>
+      <h3 class="student-name-card">Gómez Karla</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 11 -->
+    <div class="student-card">
+      <div class="student-number">11</div>
+      <div class="student-photo">
+        <img src="/img/guanoquiza.jpg" alt="Guanoquiza Nicole">
+      </div>
+      <h3 class="student-name-card">Guanoquiza Nicole</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 12 -->
+    <div class="student-card">
+      <div class="student-number">12</div>
+      <div class="student-photo">
+        <img src="/img/lituma.png" alt="Lituma Julieth">
+      </div>
+      <h3 class="student-name-card">Lituma Julieth</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 13 -->
+    <div class="student-card">
+      <div class="student-number">13</div>
+      <div class="student-photo">
+        <img src="/img/mejia.jpg" alt="Mejía Juan">
+      </div>
+      <h3 class="student-name-card">Mejía Juan</h3>
+      <p class="student-description">print("Hello World!")</p>
+    </div>
+
+    <!-- ESTUDIANTE 14 -->
+    <div class="student-card">
+      <div class="student-number">14</div>
+      <div class="student-photo">
+        <img src="/img/mera.png" alt="Mera María">
+      </div>
+      <h3 class="student-name-card">Mera María</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 15 -->
+    <div class="student-card">
+      <div class="student-number">15</div>
+      <div class="student-photo">
+        <img src="/img/placeholder.jpg" alt="Merino Maite">
+      </div>
+      <h3 class="student-name-card">Merino Maite</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 16 -->
+    <div class="student-card">
+      <div class="student-number">16</div>
+      <div class="student-photo">
+        <img src="/img/montero.jpg" alt="Montero Denisse">
+      </div>
+      <h3 class="student-name-card">Montero Denisse</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 17 -->
+    <div class="student-card">
+      <div class="student-number">17</div>
+      <div class="student-photo">
+        <img src="/img/montesdeoca.jpg" alt="Montes De Oca Sebastían">
+      </div>
+      <h3 class="student-name-card">Montes De Oca Sebastían</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 18 -->
+    <div class="student-card">
+      <div class="student-number">18</div>
+      <div class="student-photo">
+        <img src="/img/placeholder.jpg" alt="Morales Jostin">
+      </div>
+      <h3 class="student-name-card">Morales Jostin</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 19 -->
+    <div class="student-card">
+      <div class="student-number">19</div>
+      <div class="student-photo">
+        <img src="/img/muriel.jpg" alt="Muriel Luis">
+      </div>
+      <h3 class="student-name-card">Muriel Luis</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 20 -->
+    <div class="student-card">
+      <div class="student-number">20</div>
+      <div class="student-photo">
+        <img src="/img/placeholder.jpg" alt="Navarrete Dylan">
+      </div>
+      <h3 class="student-name-card">Navarrete Dylan</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 21 -->
+    <div class="student-card">
+      <div class="student-number">21</div>
+      <div class="student-photo">
+        <img src="/img/ordoñez.png" alt="Ordoñez Stalin">
+      </div>
+      <h3 class="student-name-card">Ordoñez Stalin</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 22 -->
+    <div class="student-card">
+      <div class="student-number">22</div>
+      <div class="student-photo">
+        <img src="/img/placeholder.jpg" alt="Patiño Mateo">
+      </div>
+      <h3 class="student-name-card">Patiño Mateo</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 23 -->
+    <div class="student-card">
+      <div class="student-number">23</div>
+      <div class="student-photo">
+        <img src="/img/porras.png" alt="Porras Nathaly">
+      </div>
+      <h3 class="student-name-card">Porras Nathaly</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 24 -->
+    <div class="student-card">
+      <div class="student-number">24</div>
+      <div class="student-photo">
+        <img src="/img/puenayan.jpg" alt="Puenayán Jostin">
+      </div>
+      <h3 class="student-name-card">Puenayán Jostin</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 25 -->
+    <div class="student-card">
+      <div class="student-number">25</div>
+      <div class="student-photo">
+        <img src="/img/placeholder.jpg" alt="Quiroz Aris">
+      </div>
+      <h3 class="student-name-card">Quiroz Aris</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 26 -->
+    <div class="student-card">
+      <div class="student-number">26</div>
+      <div class="student-photo">
+        <img src="/img/placeholder.jpg" alt="Romero Gabriel">
+      </div>
+      <h3 class="student-name-card">Romero Gabriel</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 27 -->
+    <div class="student-card">
+      <div class="student-number">27</div>
+      <div class="student-photo">
+        <img src="/img/placeholder.jpg" alt="Solorzano Fernando">
+      </div>
+      <h3 class="student-name-card">Solorzano Fernando</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 28 -->
+    <div class="student-card">
+      <div class="student-number">28</div>
+      <div class="student-photo">
+        <img src="/img/suarez.png" alt="Suárez Gabriela">
+      </div>
+      <h3 class="student-name-card">Suárez Gabriela</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 29 -->
+    <div class="student-card">
+      <div class="student-number">29</div>
+      <div class="student-photo">
+        <img src="/img/placeholder.jpg" alt="Tapia Maykel">
+      </div>
+      <h3 class="student-name-card">Tapia Maykel</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 30 -->
+    <div class="student-card">
+      <div class="student-number">30</div>
+      <div class="student-photo">
+        <img src="/img/magnu.jpg" alt="Torres Damían">
+      </div>
+      <h3 class="student-name-card">Torres Damían</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 31 -->
+    <div class="student-card">
+      <div class="student-number">31</div>
+      <div class="student-photo">
+        <img src="/img/yela.png" alt="Yela Dennisses">
+      </div>
+      <h3 class="student-name-card">Yela Dennisses</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+    <!-- ESTUDIANTE 32 -->
+    <div class="student-card">
+      <div class="student-number">32</div>
+      <div class="student-photo">
+        <img src="/img/zambrano.png" alt="Zambrano Brithany">
+      </div>
+      <h3 class="student-name-card">Zambrano Brithany</h3>
+      <p class="student-description">[Tu descripción aquí]</p>
+    </div>
+
+  </div>
+
+  <Footer />
+
+  <script>
+    // Efecto hover simple
+    document.querySelectorAll('.student-card').forEach(card => {
+      card.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-8px)';
+      });
+      
+      card.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0)';
+      });
+    });
+  </script>
+</body>
+</html>
